@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switch</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      .kabel {
+        width: 12px;
+        height: 100px;
+        background-color: black;
+        position: absolute;
+        left: 80px;
+      }
+
+      .fitingLampu {
+        position: absolute;
+        top: 100px;
+        left: -115px;
+        width: 400px;
+        height: 150px;
+        z-index: 99;
+        transform: skewX(25deg);
+        background-color: black;
+        border-top-right-radius: 30px;
+      }
+
+      .lampuON {
+        width: 90px;
+        height: 90px;
+        background-color: rgb(255, 221, 0);
+        position: absolute;
+        z-index: 80;
+        top: 200px;
+        left: 50px;
+        border-radius: 100px;
+      }
+
+      .lampuOFF {
+        width: 90px;
+        height: 90px;
+        background-color: rgb(180, 180, 180);
+        position: absolute;
+        z-index: 80;
+        top: 200px;
+        left: 50px;
+        border-radius: 100px;
+      }
+
+      .cahayaON {
+        position: absolute;
+        top: 250px;
+        left: -125px;
+        width: 515px;
+        height: 300px;
+        z-index: 90;
+        transform: skewX(25deg);
+        background: linear-gradient(
+          rgba(255, 255, 0, 0.445),
+          rgba(255, 255, 0, 0.012)
+        );
+      }
+
+      .cahayaOFF {
+        position: absolute;
+        top: 250px;
+        left: -125px;
+        width: 515px;
+        height: 300px;
+        z-index: 90;
+        transform: skewX(25deg);
+      }
+
+      .kabelSwitch {
+        width: 2px;
+        height: 100px;
+        background-color: black;
+        z-index: 91;
+        position: absolute;
+        top: 200px;
+        left: 200px;
+      }
+
+      button {
+        width: 30px;
+        height: 60px;
+        /* background-color: aqua; */
+        z-index: 93;
+        position: absolute;
+        top: 300px;
+        left: 186px;
+        border-radius: 30px;
+        border: 1px solid transparent;
+      }
+
+      button.on {
+        background-color: rgb(255, 221, 0);
+      }
+
+      button.off {
+        background-color: rgba(203, 203, 203, 0.56);
+      }
+
+      button.on::after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: rgb(0, 0, 0);
+        border-radius: 30px;
+        position: absolute;
+        bottom: 4px;
+        left: 4px;
+        z-index: 94;
+      }
+
+      button.off::before {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: rgb(0, 0, 0);
+        border-radius: 30px;
+        top: 4px;
+        left: 4px;
+        position: absolute;
+        z-index: 95;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="kabel"></div>
+    <div class="fitingLampu"></div>
+    <div id="lampu" class="lampuON"></div>
+    <div id="cahaya" class="cahayaON"></div>
+    <div class="kabelSwitch"></div>
+    <button id="btnLampu" class="on" onclick="saklarLampu()"></button>
+
+    <script>
+      const btnlampu = document.getElementById("btnLampu");
+      const cahaya = document.getElementById("cahaya");
+      const lampu = document.getElementById("lampu");
+
+      function saklarLampu() {
+        btnlampu.classList.toggle("on");
+        btnlampu.classList.toggle("off");
+        cahaya.classList.toggle("cahayaON");
+        cahaya.classList.toggle("cahayaOFF");
+        lampu.classList.toggle("lampuON");
+        lampu.classList.toggle("lampuOFF");
+      }
+
+      var xhr = new XMLHttpRequest();
+      let a = 0;
+      let count = 0;
+
+      btnlampu.addEventListener("click", () => {
+        if (a == 0) {
+          count++;
+          if (count == 1) {
+            xhr.open("GET", "/update?state=0", true);
+          }
+          if (count == 2) {
+            xhr.open("GET", "/update?state=1", true);
+            count = 0;
+          }
+          xhr.send();
+        }
+        console.log(count);
+      });
+    </script>
+  </body>
+</html>
